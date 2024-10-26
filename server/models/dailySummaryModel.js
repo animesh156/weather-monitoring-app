@@ -6,7 +6,10 @@ const SummarySchema = new mongoose.Schema({
   avgTemp: Number,
   maxTemp: Number,
   minTemp: Number,
-  dominantCondition: String
+  avgWindSpeed: Number,
+  avgHumidity: Number,
+  dominantCondition: String,
+  icon: String  
 });
 
 module.exports = mongoose.model('Summary', SummarySchema);

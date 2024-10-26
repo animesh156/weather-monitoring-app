@@ -1,40 +1,101 @@
-// src/components/DailySummary.js
+// src/components/DailySummary.jsx
 
-import  { useEffect, useState } from 'react';
-import { fetchSummaries } from '../api';
+import { useEffect, useState } from "react";
+import { fetchSummaries } from "../api"; // Import the fetchSummaries function
 
 const DailySummary = () => {
-  const [summaries, setSummaries] = useState([]);
+  const [summaries, setSummaries] = useState([]); // Initialize as an array
   const [loading, setLoading] = useState(true);
+  const [selectedCity, setSelectedCity] = useState("Delhi"); // Default city
 
+  const cities = ["Delhi", "Mumbai", "Chennai", "Bangalore", "Kolkata", "Hyderabad"];
+
+  // Fetch summaries based on the selected  city
   useEffect(() => {
     const getSummaries = async () => {
+      setLoading(true); // Set loading state to true before fetching
       try {
-        const data = await fetchSummaries();
-        setSummaries(data);
+        const data = await fetchSummaries(selectedCity); // Fetch data for the selected city
+        setSummaries(data); // Store fetched data in state
       } catch (error) {
-        console.error('Error fetching summaries:', error);
+        console.error("Error fetching summaries:", error);
+        setSummaries([]); // Handle error by resetting to an empty array
       } finally {
-        setLoading(false);
+        setLoading(false); // Set loading state to false
       }
     };
 
     getSummaries();
-  }, []);
+  }, [selectedCity]); // Run effect only when selectedCity changes
 
-  if (loading) return <div>Loading summaries...</div>;
-  if (summaries.length === 0) return <div>No summaries available.</div>;
+  // Function to handle tab clicks
+  const handleCityChange = (city) => {
+    setSelectedCity(city); // Update selected city
+  };
+
+  if (loading)
+    return (
+      <div className="flex justify-center mt-6">
+        <span className="loading loading-dots w-28"></span>
+      </div>
+    );
+
+  if (summaries.length === 0)
+    return <div className="text-3xl text-center font-bold mt-10">No summaries available for {selectedCity}.</div>;
+
+  const filteredSummaryData = summaries.filter(
+    (item) => item.city === selectedCity
+  );
 
   return (
     <div>
-      <h2>Daily Summaries</h2>
-      <ul>
-        {summaries.map((summary) => (
-          <li key={summary._id}>
-            {summary.city} on {summary.date}: Avg Temp: {summary.avgTemp}°C, Max Temp: {summary.maxTemp}°C, Min Temp: {summary.minTemp}°C, Dominant Condition: {summary.dominantCondition}
-          </li>
+      <h2 className="text-2xl text-rose-500 text-center font-bold mb-5">
+        Daily Summaries
+      </h2>
+      <div className="tabs">
+        {cities.map((city) => (
+          <button
+            key={city}
+            className={`tab ${
+              selectedCity === city ? "tab-active" : ""
+            } border-b border-r-stone-800 mb-3 font-extrabold`}
+            onClick={() => handleCityChange(city)} // Update selected city on click
+          >
+            {city}
+          </button>
         ))}
-      </ul>
+      </div>
+
+      <div className="flex flex-wrap justify-center">
+        {filteredSummaryData.map((summary) => (
+          <div
+            key={summary._id}
+            className="card bg-base-100 mb-6 mr-4 w-96 shadow-xl"
+          >
+            <figure className="px-10 pt-6">
+              <img
+                src={`https://openweathermap.org/img/wn/${summary.icon}@2x.png`}
+                alt={summary.dominantCondition}
+                className="rounded-xl"
+              />
+            </figure>
+            <div className="card-body items-center text-center">
+              <h1 className="card-title text-2xl font-extrabold -mt-4">
+                {summary.city}
+              </h1>
+              <p className="font-semibold">Date: {summary.date}</p>
+              <p className="font-semibold">Avg Temp: {summary.avgTemp}°C</p>
+              <p className="font-semibold">Max Temp: {summary.maxTemp}°C</p>
+              <p className="font-semibold">Min Temp: {summary.minTemp}°C</p>
+              <p className="font-semibold">Avg Wind: {summary.avgWindSpeed}</p>
+              <p className="font-semibold">Avg Humidity: {summary.avgHumidity}</p>
+              <p className="font-semibold">
+                Dominant Condition: {summary.dominantCondition}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
