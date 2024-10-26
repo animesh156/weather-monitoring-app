@@ -29,8 +29,8 @@ const DailySummary = () => {
   }, [selectedCity]); // Run effect only when selectedCity changes
 
   // Function to handle tab clicks
-  const handleCityChange = (city) => {
-    setSelectedCity(city); // Update selected city
+  const handleCityChange = (e) => {
+    setSelectedCity(e.target.value); // Update selected city
   };
 
   if (loading)
@@ -52,25 +52,30 @@ const DailySummary = () => {
       <h2 className="text-2xl text-rose-500 text-center font-bold mb-5">
         Daily Summaries
       </h2>
-      <div className="tabs">
-        {cities.map((city) => (
-          <button
-            key={city}
-            className={`tab ${
-              selectedCity === city ? "tab-active" : ""
-            } border-b border-r-stone-800 mb-3 font-extrabold`}
-            onClick={() => handleCityChange(city)} // Update selected city on click
-          >
-            {city}
-          </button>
-        ))}
+     
+      <div className="flex justify-center mb-6">
+        <select
+          className="select select-secondary w-full max-w-xs"
+          value={selectedCity} // Controlled component
+          onChange={handleCityChange} // Update selected city on change
+        >
+          {cities.map((city) => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
+        </select>
       </div>
+
+
+      
+
 
       <div className="flex flex-wrap justify-center">
         {filteredSummaryData.map((summary) => (
           <div
             key={summary._id}
-            className="card bg-base-100 border-2 border-cyan-400 dark:bg-black mb-6 mr-4 w-96 shadow-xl"
+            className="card bg-base-100 border-2 border-cyan-400 dark:bg-black mb-6  w-80 shadow-xl"
           >
             <figure className="px-10 pt-6">
               <img

@@ -10,7 +10,7 @@ function Weather() {
     const getWeather = async () => {
       try {
         const data = await fetchWeather();
-        console.log(data)
+        
         const uniqueData = removeDuplicates(data);
         setWeatherData(uniqueData);
       } catch (error) {
@@ -37,7 +37,9 @@ function Weather() {
     return date.toLocaleTimeString(); // Format date and time
   };
 
-  const handleCityChange = (city) => {
+  const handleCityChange = (e) => {
+    const city = e.target.value
+    
     setSelectedCity(city); // Set the selected city
   };
 
@@ -54,21 +56,26 @@ function Weather() {
       <h2 className='text-2xl text-red-600 text-center mb-4 mt-2 font-extrabold'>Current Weather</h2>
 
       {/* City Selection Tabs */}
-      <div className="tabs">
-        {['Delhi', 'Mumbai', 'Chennai', 'Bangalore', 'Kolkata', 'Hyderabad'].map((city) => (
-          <button
-            key={city}
-            className={`tab ${selectedCity === city ? 'tab-active' : ''} border-b border-r-stone-800 mb-3 text-lg font-extrabold ` }
-            onClick={() => handleCityChange(city)}
-          >
-            {city}
-          </button>
-        ))}
+      <div className="flex justify-center mb-6">
+        <select
+          className="select select-secondary w-full max-w-xs"
+          value={selectedCity} // Controlled component
+          onChange={handleCityChange} // Update city on change
+        >
+          <option disabled value="">
+            Pick your city
+          </option>
+          {['Delhi', 'Mumbai', 'Chennai', 'Bangalore', 'Kolkata', 'Hyderabad'].map((city) => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="flex flex-wrap justify-center mt-3">
         {filteredWeatherData.map((item, index) => (
-          <div key={index} className="card border-cyan-400 border-2 dark:bg-black bg-base-100 w-96 mb-5 mr-4 shadow-xl">
+          <div key={index} className="card border-cyan-400 border-2 m-auto dark:bg-black bg-base-100 w-80 mb-5  shadow-xl">
             <figure className="px-10 pt-10">
             <img
                 src={getWeatherIcon(item.icon)} // Dynamic icon based on weather data
