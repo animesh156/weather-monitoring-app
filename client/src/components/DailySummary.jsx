@@ -70,7 +70,7 @@ const DailySummary = () => {
         {filteredSummaryData.map((summary) => (
           <div
             key={summary._id}
-            className="card bg-base-100 mb-6 mr-4 w-96 shadow-xl"
+            className="card bg-base-100 border-2 border-cyan-400 dark:bg-black mb-6 mr-4 w-96 shadow-xl"
           >
             <figure className="px-10 pt-6">
               <img

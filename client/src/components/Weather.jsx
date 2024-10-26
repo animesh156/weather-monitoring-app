@@ -68,7 +68,7 @@ function Weather() {
 
       <div className="flex flex-wrap justify-center mt-3">
         {filteredWeatherData.map((item, index) => (
-          <div key={index} className="card  bg-base-100 w-96 mb-5 mr-4 shadow-xl">
+          <div key={index} className="card border-cyan-400 border-2 dark:bg-black bg-base-100 w-96 mb-5 mr-4 shadow-xl">
             <figure className="px-10 pt-10">
             <img
                 src={getWeatherIcon(item.icon)} // Dynamic icon based on weather data
