@@ -58,7 +58,7 @@ function Weather() {
         {['Delhi', 'Mumbai', 'Chennai', 'Bangalore', 'Kolkata', 'Hyderabad'].map((city) => (
           <button
             key={city}
-            className={`tab ${selectedCity === city ? 'tab-active' : ''} border-b border-r-stone-800 mb-3 font-extrabold ` }
+            className={`tab ${selectedCity === city ? 'tab-active' : ''} border-b border-r-stone-800 mb-3 text-lg font-extrabold ` }
             onClick={() => handleCityChange(city)}
           >
             {city}
@@ -68,7 +68,7 @@ function Weather() {
 
       <div className="flex flex-wrap justify-center mt-3">
         {filteredWeatherData.map((item, index) => (
-          <div key={index} className="card bg-base-100 w-96 mb-5 mr-4 shadow-xl">
+          <div key={index} className="card  bg-base-100 w-96 mb-5 mr-4 shadow-xl">
             <figure className="px-10 pt-10">
             <img
                 src={getWeatherIcon(item.icon)} // Dynamic icon based on weather data
@@ -77,10 +77,10 @@ function Weather() {
               />
             </figure>
             <div className="card-body items-center text-center font-bold">
-              <h2 className="card-title font-extrabold">{item.city}</h2>
-              <p>{item.temp}°C </p>
-              <p>{item.main}</p>
-              <p>Last Updated: {formatTimestamp(item.timestamp)}</p>
+              <h2 className="card-title font-extrabold text-cyan-400">{item.city}</h2>
+              <p className='text-pink-500 font-bold'>Temp: {item.temp}°C </p>
+              <p className='text-red-500 font-bold'>Feels Like: {item.main}</p>
+              <p className='text-green-500 font-bold'>Last Updated: {formatTimestamp(item.timestamp)}</p>
             </div>
           </div>
         ))}

@@ -80,16 +80,16 @@ const DailySummary = () => {
               />
             </figure>
             <div className="card-body items-center text-center">
-              <h1 className="card-title text-2xl font-extrabold -mt-4">
+              <h1 className="card-title text-3xl font-extrabold -mt-4 text-sky-500">
                 {summary.city}
               </h1>
-              <p className="font-semibold">Date: {summary.date}</p>
-              <p className="font-semibold">Avg Temp: {summary.avgTemp}°C</p>
-              <p className="font-semibold">Max Temp: {summary.maxTemp}°C</p>
-              <p className="font-semibold">Min Temp: {summary.minTemp}°C</p>
-              <p className="font-semibold">Avg Wind: {summary.avgWindSpeed}</p>
-              <p className="font-semibold">Avg Humidity: {summary.avgHumidity}</p>
-              <p className="font-semibold">
+              <p className="font-bold text-yellow-400">Date: {summary.date}</p>
+              <p className="font-bold text-pink-500">Avg Temp: {summary.avgTemp}°C</p>
+              <p className="font-bold text-violet-600">Max Temp: {summary.maxTemp}°C</p>
+              <p className="font-bold text-orange-500">Min Temp: {summary.minTemp}°C</p>
+              <p className="font-bold text-red-500">Avg Wind: {summary.avgWindSpeed}</p>
+              <p className="font-bold text-cyan-400">Avg Humidity: {summary.avgHumidity}</p>
+              <p className="font-bold text-fuchsia-700">
                 Dominant Condition: {summary.dominantCondition}
               </p>
             </div>
