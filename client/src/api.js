@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const API_URL = 'http://localhost:7789/weather'; // Update this URL if your backend is hosted elsewhere
+const API_URL = 'https://weather-monitoring-app-backend.vercel.app/weather'; 
 
 export const fetchWeather = async () => {
   const response = await axios.get(`${API_URL}`);

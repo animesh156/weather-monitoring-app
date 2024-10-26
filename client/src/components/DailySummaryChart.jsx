@@ -17,7 +17,7 @@ const DailySummaryChart = () => {
   // Fetch daily summaries from the backend
   useEffect(() => {
     axios
-      .get("http://localhost:7789/weather/daily-summaries")
+      .get("https://weather-monitoring-app-backend.vercel.app/weather/daily-summaries")
       .then((response) => setSummaries(response.data))
 
       .catch((error) => console.error("Error fetching summaries:", error));
