@@ -20,13 +20,8 @@ app.use(express.json());
 
 app.use('/weather', weatherRoutes);
 
-// cron.schedule('*/5 * * * *', async () => {
-//   console.log('Fetching weather data...');
-//   const weatherData = await fetchWeatherData();
-//   checkWeatherThresholds(weatherData);
-// });
 
-cron.schedule('*/10 * * * *', async () => {
+cron.schedule('*/30 * * * *', async () => {
   console.log('Checking weather thresholds...');
 
   try {
@@ -44,24 +39,25 @@ cron.schedule('*/10 * * * *', async () => {
 
 
 
-setInterval(async () => {
-  console.log('Fetching weather data...');
-   await fetchWeatherData();
- 
-}, 10 * 10000); // 10 seconds
 
 
-cron.schedule('*/4 * * * *', async () => {
+// Schedule to fetch weather data every 5 minutes
+cron.schedule('*/5 * * * *', async () => {
+  // console.log('Fetching weather data every 5 minutes...');
+  try {
+    await fetchWeatherData();
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+  }
+});
+
+
+
+
+
+cron.schedule('0 * * * *', async () => { // At minute 0 of every hour
   console.log('Generating daily summaries (Hourly)...');
-   await generateDailySummary();
+  await generateDailySummary();
 });
 
-
-// cron.schedule('0 * * * *', async () => { // At minute 0 of every hour
-//   console.log('Generating daily summaries (Hourly)...');
-//   await generateDailySummary();
-// });
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT);
