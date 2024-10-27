@@ -1,5 +1,3 @@
-// src/components/DailySummary.jsx
-
 import { useEffect, useState } from "react";
 import { fetchSummaries } from "../api"; // Import the fetchSummaries function
 
@@ -8,41 +6,42 @@ const DailySummary = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCity, setSelectedCity] = useState("Delhi"); // Default city
 
+  // Initialize selectedDate with the current date in YYYY-MM-DD format
+  const getCurrentDate = () => new Date().toISOString().split("T")[0];
+  const [selectedDate, setSelectedDate] = useState(getCurrentDate()); // Default to today's date
+
   const cities = ["Delhi", "Mumbai", "Chennai", "Bangalore", "Kolkata", "Hyderabad"];
 
-  // Fetch summaries based on the selected  city
   useEffect(() => {
     const getSummaries = async () => {
-      setLoading(true); // Set loading state to true before fetching
+      setLoading(true);
       try {
-        const data = await fetchSummaries(selectedCity); // Fetch data for the selected city
-        setSummaries(data); // Store fetched data in state
+        const data = await fetchSummaries();
+        setSummaries(data);
       } catch (error) {
         console.error("Error fetching summaries:", error);
-        setSummaries([]); // Handle error by resetting to an empty array
+        setSummaries([]);
       } finally {
-        setLoading(false); // Set loading state to false
+        setLoading(false);
       }
     };
 
     getSummaries();
-  }, [selectedCity]); // Run effect only when selectedCity changes
+  }, [selectedCity]); // Run when selectedCity changes
 
-  // Function to handle tab clicks
   const handleCityChange = (e) => {
-    setSelectedCity(e.target.value); // Update selected city
+    setSelectedCity(e.target.value);
   };
 
-  const isToday = (timestamp) => {
-    const date = new Date(timestamp);
-    const today = new Date();
-    return (
-      date.getDate() === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear()
-    );
+  const handleDateChange = (e) => {
+    setSelectedDate(e.target.value);
   };
 
+  // Filter summaries by selected city and date
+  const filteredSummaryData = summaries.filter((item) => {
+    const itemDate = new Date(item.date).toISOString().split("T")[0];
+    return item.city === selectedCity && itemDate === selectedDate;
+  });
 
   if (loading)
     return (
@@ -51,24 +50,14 @@ const DailySummary = () => {
       </div>
     );
 
-  if (summaries.length === 0)
-    return <div className="text-3xl text-center font-bold mt-10">No summaries available for {selectedCity}.</div>;
-
-  const filteredSummaryData = summaries.filter(
-    (item) => item.city === selectedCity && isToday(item.date)
-  );
-
   return (
     <div>
-      <h2 className="text-2xl text-rose-500 text-center font-bold mb-5">
-        Daily Summaries
-      </h2>
-     
-      <div className="flex justify-center mb-6">
+      {/* City Selection */}
+      <div className="flex justify-center mb-2 mt-4">
         <select
-          className="select select-secondary w-full max-w-xs"
-          value={selectedCity} // Controlled component
-          onChange={handleCityChange} // Update selected city on change
+          className="select select-secondary w-full max-w-xs dark:text-green-500"
+          value={selectedCity}
+          onChange={handleCityChange}
         >
           {cities.map((city) => (
             <option key={city} value={city}>
@@ -78,15 +67,29 @@ const DailySummary = () => {
         </select>
       </div>
 
+      {/* Date Input */}
+      <div className="flex justify-center mb-8">
+        <input
+          type="date"
+          className="input input-bordered border-rose-500 w-full max-w-xs"
+          value={selectedDate}
+          onChange={handleDateChange}
+        />
+      </div>
 
-      
+      {/* No Data Message */}
+      {!filteredSummaryData.length && (
+        <div className="text-center text-3xl font-bold mt-10">
+          No weather data available for {selectedCity} on {selectedDate}.
+        </div>
+      )}
 
-
-      <div className="flex flex-wrap justify-center">
+      {/* Summaries Display */}
+      <div className="flex flex-wrap justify-center ">
         {filteredSummaryData.map((summary) => (
           <div
             key={summary._id}
-            className="card bg-base-100 border-2 border-cyan-400 dark:bg-black mb-6  w-80 shadow-xl"
+            className="card bg-base-100 h-96 border-2 border-cyan-400 dark:bg-black mb-4 w-80 shadow-xl"
           >
             <figure className="px-10 pt-6">
               <img
