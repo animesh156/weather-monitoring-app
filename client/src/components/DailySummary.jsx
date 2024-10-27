@@ -33,6 +33,17 @@ const DailySummary = () => {
     setSelectedCity(e.target.value); // Update selected city
   };
 
+  const isToday = (timestamp) => {
+    const date = new Date(timestamp);
+    const today = new Date();
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
+  };
+
+
   if (loading)
     return (
       <div className="flex justify-center mt-6">
@@ -44,7 +55,7 @@ const DailySummary = () => {
     return <div className="text-3xl text-center font-bold mt-10">No summaries available for {selectedCity}.</div>;
 
   const filteredSummaryData = summaries.filter(
-    (item) => item.city === selectedCity
+    (item) => item.city === selectedCity && isToday(item.date)
   );
 
   return (

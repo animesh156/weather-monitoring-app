@@ -22,9 +22,9 @@ const fetchWeatherData = async () => {
         timestamp: new Date(dt * 1000)
       });
 
-      const weatherdata = await weatherData.save();
+       await weatherData.save();
       console.log(`Weather data saved for ${city}`);
-      return weatherdata
+      
     }
   } catch (error) {
     console.error('Error fetching weather data:', error);

@@ -16,7 +16,7 @@ const DailySummaryChart = () => {
 
   // Fetch daily summaries from the backend
   useEffect(() => {
-    axios
+    axios 
       .get("https://weather-monitoring-app-backend.vercel.app/weather/daily-summaries")
       .then((response) => setSummaries(response.data))
 
@@ -34,7 +34,7 @@ const DailySummaryChart = () => {
 
   return (
     <div>
-      <h2 className="text-2xl text-center text-cyan-400 mb-7 font-extrabold mt-3">Weather Summary by City</h2>
+      <h2 className="text-2xl text-center text-cyan-400 mb-7 font-extrabold mt-3">Weather Summary on {new Date().toDateString()}</h2>
       <ResponsiveContainer width="90%" height={400}>
         <BarChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />

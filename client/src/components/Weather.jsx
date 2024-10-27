@@ -32,10 +32,26 @@ function Weather() {
   };
 
 
+  const isToday = (timestamp) => {
+    const date = new Date(timestamp);
+    const today = new Date();
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
+  };
+  
+
   const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp); // Use the ISO string directly
     return date.toLocaleTimeString(); // Format date and time
   };
+
+  const formatdate = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toDateString()
+  }
 
   const handleCityChange = (e) => {
     const city = e.target.value
@@ -46,8 +62,10 @@ function Weather() {
   if (loading) return <div className="flex justify-center mt-6"><span className="loading loading-dots  w-28"></span></div>
   if (!weatherData.length) return <div className='text-center text-3xl font-bold'>No weather data available.</div>;
 
-  // Filter weather data based on the selected city
-  const filteredWeatherData = weatherData.filter((item) => item.city === selectedCity);
+  // Filter current day weather data based on the selected city
+  const filteredWeatherData = weatherData.filter(
+    (item) => item.city === selectedCity && isToday(item.timestamp)
+  );
 
   const getWeatherIcon = (iconCode) => `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
 
@@ -87,6 +105,7 @@ function Weather() {
               <h2 className="card-title font-extrabold text-cyan-400">{item.city}</h2>
               <p className='text-pink-500 font-bold'>Temp: {item.temp}°C </p>
               <p className='text-red-500 font-bold'>Feels Like: {item.main}</p>
+              <p className='text-red-500 font-bold'>Date: {formatdate(item.timestamp)}</p>
               <p className='text-green-500 font-bold'>Last Updated: {formatTimestamp(item.timestamp)}</p>
             </div>
           </div>
