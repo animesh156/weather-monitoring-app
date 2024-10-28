@@ -21,7 +21,29 @@ app.use(express.json());
 app.use('/weather', weatherRoutes);
 
 
-cron.schedule('*/30 * * * *', async () => {
+// Schedule to fetch weather data every 5 minutes
+const fetchWeatherTask = async () => {
+  console.log('Fetching weather data...');
+
+  try {
+    await fetchWeatherData(); // Call the fetch weather function
+    console.log('Weather data fetched successfully.');
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+  }
+
+  // Schedule the next execution after 5 minutes (5 * 60 * 1000 ms)
+  setTimeout(fetchWeatherTask, 5 * 60 * 1000);
+};
+
+// Start the task on server initialization
+fetchWeatherTask();
+
+
+
+
+
+const checkWeatherTask = async () => {
   console.log('Checking weather thresholds...');
 
   try {
@@ -29,35 +51,46 @@ cron.schedule('*/30 * * * *', async () => {
 
     if (weatherData.length > 0) {
       checkWeatherThresholds(weatherData); // Check thresholds
+      console.log('Weather thresholds checked.');
     } else {
       console.log('No weather data available.');
     }
   } catch (error) {
     console.error('Error fetching weather data:', error);
   }
-});
+
+  // Schedule the next execution after 30 minutes (30 * 60 * 1000 ms)
+  setTimeout(checkWeatherTask, 30 * 60 * 1000);
+};
+
+// Start the task when the server starts
+checkWeatherTask();
 
 
 
 
 
-// Schedule to fetch weather data every 5 minutes
-cron.schedule('*/5 * * * *', async () => {
-  // console.log('Fetching weather data every 5 minutes...');
+
+
+
+
+
+const generateSummaryTask = async () => {
+  console.log('Generating daily summaries...');
+
   try {
-    await fetchWeatherData();
+    await generateDailySummary(); // Call the summary generation function
+    console.log('Daily summary generated successfully.');
   } catch (error) {
-    console.error('Error fetching weather data:', error);
+    console.error('Error generating daily summary:', error);
   }
-});
 
+  // Schedule the next execution after 1 hour (60 * 60 * 1000 ms)
+  setTimeout(generateSummaryTask, 60 * 60 * 1000);
+};
 
+// Start the task on server initialization
+generateSummaryTask();
 
-
-
-cron.schedule('0 * * * *', async () => { // At minute 0 of every hour
-  console.log('Generating daily summaries (Hourly)...');
-  await generateDailySummary();
-});
 
 app.listen(PORT);
