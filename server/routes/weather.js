@@ -24,6 +24,18 @@ router.get('/summaries', async (req, res) => {
 });
 
 
+router.get('/update', async (req, res) => {
+  try {
+    await fetchWeatherData(); // Fetch weather data
+    res.status(200).send('Weather data updated successfully.');
+    console.log('Weather data fetched successfully via API.');
+  } catch (error) {
+    console.error('Error fetching weather data via API:', error);
+    res.status(500).send('Error updating weather data.');
+  }
+});
+
+
 
 
 

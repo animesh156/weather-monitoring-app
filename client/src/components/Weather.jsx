@@ -49,7 +49,7 @@ function Weather() {
         new Date(item.timestamp).toISOString().split('T')[0] === selectedDate
     );
 
-  if (loading) return <div className="flex justify-center mt-6"><span className="loading loading-dots w-28"></span></div>;
+  if (loading) return <div className="flex justify-center mt-6"><span className="loading loading-dots text-sky-600 w-28"></span></div>;
   if (!weatherData.length) return <div className="text-center text-3xl font-bold">No weather data available.</div>;
 
   const filteredWeatherData = filterWeatherByDate(weatherData);
@@ -106,7 +106,7 @@ function Weather() {
                 <h2 className="card-title font-extrabold text-cyan-400">{item.city}</h2>
                 <p className="text-pink-500 font-bold">Temp: {item.temp}°C</p>
                 <p className="text-red-500 font-bold">Condition: {item.main}</p>
-                <p className="text-red-500 font-bold">Date: {formatDate(item.timestamp)}</p>
+                <p className="text-yellow-500 font-bold">Date: {formatDate(item.timestamp)}</p>
                 <p className="text-green-500 font-bold">Last Updated: {formatTimestamp(item.timestamp)}</p>
               </div>
             </div>

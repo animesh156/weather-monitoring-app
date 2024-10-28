@@ -15,6 +15,7 @@ const DailySummaryChart = () => {
   const [summaries, setSummaries] = useState([]);
   const [filteredSummaries, setFilteredSummaries] = useState([]);
   const [selectedDate, setSelectedDate] = useState(getCurrentDate()); // Default to today's date
+  const [loading,setLoading] = useState(true)
 
   // Function to get the current date in YYYY-MM-DD format
   function getCurrentDate() {
@@ -28,10 +29,12 @@ const DailySummaryChart = () => {
         const response = await axios.get(
           `https://weather-monitoring-app-backend.vercel.app/weather/summaries`
         );
+        setLoading(false)
         setSummaries(response.data); // Set all summaries fetched from the backend
         filterData(response.data); // Immediately filter data after fetching
       } catch (error) {
         console.error("Error fetching summaries:", error);
+        setLoading(false)
         setSummaries([]); // Reset summaries if an error occurs
       }
     };
@@ -59,6 +62,8 @@ const DailySummaryChart = () => {
     avgWindSpeed: summary.avgWindSpeed,
     avgHumidity: summary.avgHumidity,
   }));
+
+  if(loading) return <div className="flex justify-center mt-6"><span className="loading loading-dots text-red-600 w-28"></span></div>;
 
   return (
     <div>

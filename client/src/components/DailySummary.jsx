@@ -46,7 +46,7 @@ const DailySummary = () => {
   if (loading)
     return (
       <div className="flex justify-center mt-6">
-        <span className="loading loading-dots w-28"></span>
+        <span className="loading loading-dots text-rose-600 w-28"></span>
       </div>
     );
 
