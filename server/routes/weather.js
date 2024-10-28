@@ -1,6 +1,7 @@
 const express = require('express');
 const Weather = require('../models/weatherModel');
 const Summary = require('../models/dailySummaryModel');
+const fetchWeatherData = require("../services/weatherService");
 
 
 const router = express.Router();
